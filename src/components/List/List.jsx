@@ -3,17 +3,12 @@ import { CircularProgress, Grid, Typography, InputLabel, MenuItem, FormControl, 
 import LocationDetails from "../LocationDetails/LocationDetails";
 import useStyles from "./styles";
 
-const List = () => {
+const List = ({ places }) => {
 
  const classes = useStyles();
  const [type, setType] = useState('restaurants');
  const [rating, setRating] = useState('');
 
- const places = [
-  { name: 'Temp1' },
-  { name: 'Temp2' },
-  { name: 'Temp3' }
- ];
 
  return (
   <div className={classes.container}>
