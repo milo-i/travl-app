@@ -7,10 +7,10 @@ import Rating from "@material-ui/lab/Rating";
 import useStyles from "./styles";
 
 const PlaceDetails = ({ place }) => {
-
+ // Importerar min styles fil och assignar den till variabeln classes
  const classes = useStyles();
 
- console.log(place);
+ // console.log(place);
 
  return (
   <Card elevation={6}>
@@ -22,8 +22,8 @@ const PlaceDetails = ({ place }) => {
    <CardContent>
     <Typography gutterBottom variant="h5">{place.name}</Typography>
     <Box display="flex" justifyContent="space-between">
-     <Typography variant="subtitle1">Price</Typography>
-     <Typography gutterBottom variant="subtitle1">{place.price_level}</Typography>
+     <Rating value={Number(place.rating)} readOnly />
+     <Typography gutterBottom variant="subtitle1">out of {place.num_reviews} reviews</Typography>
     </Box>
     <Box display="flex" justifyContent="space-between">
      <Typography variant="subtitle1">Ranking</Typography>
@@ -57,10 +57,7 @@ const PlaceDetails = ({ place }) => {
      <Button size="small" color="primary" onClick={() => window.open(place.web_url, "_blank")}>TripAdvisor</Button>
      <Button size="small" color="primary" onClick={() => window.open(place.website, "_blank")}>Website</Button>
     </CardActions>
-
-
    </CardContent>
-
   </Card>
  )
 }

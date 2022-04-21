@@ -8,33 +8,39 @@ import Map from "./components/Map/Map";
 
 
 const App = () => {
-
+  // Alla states som behövs för att appen ska fungera
   const [places, setPlaces] = useState([]);
   const [coordinates, setCoordinates] = useState({});
   const [bounds, setBounds] = useState(null);
+  const [type, setType] = useState('restaurants');
+  const [rating, setRating] = useState('');
+  const [filteredPlaces, setfilteredPlaces] = useState([]);
 
-  // console.log(coordinates, 'coordinates');
-  // console.log(bounds, 'bounds');
-
+  // Hook som tar reda på userns nuvarande position
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
       setCoordinates({ lat: latitude, lng: longitude })
     })
   }, []);
 
+  // här filtreras alla platser i places objektet för att sålla ut de platser beroende på vilken rating man väljer 
   useEffect(() => {
-    // console.log(coordinates, 'rad 26');
-    // console.log(bounds, 'rad 27');
+    const filteredPlaces = places.filter((place) => place.rating > rating);
+    setfilteredPlaces(filteredPlaces);
+
+  }, [rating]);
+
+  // Nedan finns getPlaces funktionen som hämtar datan från api:et. Den filtrerar ut alla ställen som "finns". Jag upptäckte att det finns "tomma" places därav denna filtrering 
+  useEffect(() => {
     if (bounds === null) {
       return;
     }
-    getPlaces(bounds)
+    getPlaces(type, bounds)
       .then((data) => {
-        console.log(bounds);
-        setPlaces(data);
-        // console.log(places, 'PLACES');
+        setPlaces(data?.filter((place) => place.name && place.num_reviews > 0));
+        setfilteredPlaces([]);
       });
-  }, [coordinates, bounds]);
+  }, [type, coordinates, bounds]);
 
   return (
     <>
@@ -43,13 +49,20 @@ const App = () => {
       <Header />
       <Grid container spacing={3} style={{ width: '100%' }}>
         <Grid item xs={12} md={4}>
-          <List places={places} />
+          <List
+            places={filteredPlaces.length ? filteredPlaces : places}
+            type={type}
+            setType={setType}
+            rating={rating}
+            setRating={setRating}
+          />
         </Grid>
         <Grid item xs={12} md={8}>
           <Map
             setCoordinates={setCoordinates}
             setBounds={setBounds}
             coordinates={coordinates}
+            places={filteredPlaces.length ? filteredPlaces : places}
           />
         </Grid>
 

@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import { CircularProgress, Grid, Typography, InputLabel, MenuItem, FormControl, Select } from "@material-ui/core";
+import React from "react";
+import { Grid, Typography, InputLabel, MenuItem, FormControl, Select } from "@material-ui/core";
 import LocationDetails from "../LocationDetails/LocationDetails";
 import useStyles from "./styles";
 
-const List = ({ places }) => {
-
+const List = ({ places, type, setType, rating, setRating }) => {
+ // Importerar min styles fil och assignar den till variabeln classes
  const classes = useStyles();
- const [type, setType] = useState('restaurants');
- const [rating, setRating] = useState('');
 
 
  return (
@@ -33,7 +31,7 @@ const List = ({ places }) => {
     </Select>
    </FormControl>
    <Grid container spacing={3} className={classes.list}>
-    {/* Om det finns platser i places objektet, då kör map metoden genom alla platser och "skriver" ut dom i LocationDetails komponenten */}
+    {/* Om det finns platser (det är vad frågetecknet efter places betyder) i places objektet, då kör map metoden genom alla platser och "skriver" ut dom i LocationDetails komponenten */}
     {places?.map((place, i) => (
      <Grid item key={i} xs={12}>
       <LocationDetails place={place} />
